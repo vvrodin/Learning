@@ -1,3 +1,55 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = self.right = None
+
+
+class binaryTree:
+    def __init__(self):
+        self.output = []
+        self.root = None
+
+    def __find(self, node, parent, value):
+        if node is None:
+            return None, parent, False
+
+        if node.data == value:
+            return node, parent, True
+
+        if value < node.data:
+            if node.left:
+                return self.__find(node.left, node, value)
+
+        if value > node.data:
+            if node.right:
+                return self.__find(node.right, node, value)
+
+        return node, parent, False
+
+
+    def append(self, object):
+        if self.root is None:
+            self.root = object
+            return object
+
+        s, p, fl_find = self.__find(self.root, None, object.data)
+
+        if not fl_find and s:
+            if object.data < s.data:
+                s.left = object
+            else:
+                s.right = object
+        return object
+
+    def recurtree_sort(self, node):
+        if node is None:
+            return
+
+        self.recurtree_sort(node.left)
+        self.output.append(node.data)
+        self.recurtree_sort(node.right)
+
+
 class Sorting:
     def __init__(self):
         self._counter = 0
@@ -161,6 +213,14 @@ class Sorting:
             t += 1
         return list_
 
+    def HeapSort(self, list_):
+        Tree = binaryTree()
 
-sort = Sorting()
-print(sort.comparison_counter([3,4,2,1], sort.insertionSort_orig))
+        for i in list_:
+            Tree.append(Node(i))
+        Tree.recurtree_sort(Tree.root)
+        return Tree.output
+
+
+
+
