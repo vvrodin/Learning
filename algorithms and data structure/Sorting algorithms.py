@@ -242,12 +242,12 @@ class Sorting:
         index_A = index_B = 0
         while len(list_A) != index_A and len(list_B) != index_B:
             self._counter += 1
-            if list_A[index_A] > list_B[index_B]:
-                output.append(list_B[index_B])
-                index_B += 1
-            else:
+            if list_A[index_A] < list_B[index_B]:
                 output.append(list_A[index_A])
                 index_A += 1
+            else:
+                output.append(list_B[index_B])
+                index_B += 1
         if len(list_A) == index_A:
             output.extend(list_B[index_B:])
         else:
