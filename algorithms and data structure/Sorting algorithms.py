@@ -285,4 +285,17 @@ class Sorting:
         else:
             return list_
 
-# бинарная сортировка шелла менее эффективна чем обычная сортировка шелла
+    def selection_sort(self, list_input):
+        list_ = list_input.copy()
+        for i in range(0, len(list_) - 1):
+            min = i
+            for j in range(i + 1, len(list_)):
+                if list_[j] < list_[min]:
+                    min = j
+            min_value = list_[min]
+            list_[min] = list_[i]
+            list_[i] = min_value
+        return list_
+
+
+  #бинарная сортировка шелла менее эффективна чем обычная сортировка шелла
