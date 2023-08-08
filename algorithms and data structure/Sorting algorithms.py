@@ -41,26 +41,28 @@ class binaryTree:
                 s.right = object
         return object
 
-    def recurtree_sort(self, node):
+    def tree_sort(self, node):
         if node is None:
             return
 
-        self.recurtree_sort(node.left)
+        self.tree_sort(node.left)
         self.output.append(node.data)
-        self.recurtree_sort(node.right)
+        self.tree_sort(node.right)
 
 
 class Sorting:
     def __init__(self):
         self._counter = 0
 
-    def comparison_counter(self, data, func):
-        func(data)
-        t = self._counter
+    def comparison_counter(self, data, *args, func):
+        func(data, *args)
+        func_name = str(func)[str(func).index("Sorting.") + 8: str(func).index("of")]
+        s = f'counter of comparison operations is {self._counter} for {func_name}'
         self._counter = 0
-        return t
+        return s
 
-    def __binary_search(self, list_, target):
+    def __binary_search(self, list_input, target):
+        list_ = list_input.copy()
         counter = 0
         while len(list_) > 0:
             self._counter += 1
@@ -71,40 +73,42 @@ class Sorting:
                 list_ = list_[len(list_) // 2 + 1:]
         return counter
 
-    def insertionSort_orig(self, list_):
+    def insertion_sort_original(self, list_input):
+        list_ = list_input.copy()
         for i in range(1, len(list_)):
-            newElement = list_[i]
+            new_element = list_[i]
             location = i - 1
-            self._counter += 1
-            while (location >= 0) and (newElement < list_[location]):
+            while (location >= 0) and (new_element < list_[location]):
                 self._counter += 1
                 list_[location + 1], list_[location] = list_[location], list_[location + 1]
                 location -= 1
         return list_
 
-    def insertionSort_ver1(self, list_):
+    def insertion_sort_with_binary_search(self, list_input):
+        list_ = list_input.copy()
         for i in range(1, len(list_)):
-            newElement = list_[i]
+            new_element = list_[i]
             location = i - 1
-            self._counter += 1
-            if (location >= 0) and (newElement < list_[location]):
+            if (location >= 0) and (new_element < list_[location]):
                 self._counter += 1
                 del list_[i]
-                list_.insert(self.__binary_search(list_[:i], newElement), newElement)
+                list_.insert(self.__binary_search(list_[:i], new_element), new_element)
         return list_
 
-    def BubbleSort_orig(self, list):
+    def bubble_sort_original(self, list_input):
+        list_ = list_input.copy()
         flag = True
         while flag:
             flag = False
-            for i in range(1, len(list)):
+            for i in range(1, len(list_)):
                 self._counter += 1
-                if list[i] < list[i - 1]:
-                    list[i], list[i - 1] = list[i - 1], list[i]
+                if list_[i] < list_[i - 1]:
+                    list_[i], list_[i - 1] = list_[i - 1], list_[i]
                     flag = True
-        return list
+        return list_
 
-    def BubbleSort_ver1(self, list_):
+    def bubble_sort_ver1(self, list_input):
+        list_ = list_input.copy()
         flag = True
         last_swap = len(list_)
         while flag:
@@ -117,7 +121,8 @@ class Sorting:
                     flag = True
         return list_
 
-    def BubbleSort_ver2(self, list_):
+    def bubble_sort_ver2(self, list_input):
+        list_ = list_input.copy()
         flag = True
         num = 0
         last_swap = len(list_)
@@ -138,7 +143,8 @@ class Sorting:
                         flag = True
         return list_
 
-    def BubbleSort_ver3(self, list_):
+    def bubble_sort_ver3(self, list_input):
+        list_ = list_input.copy()
         flag = True
         num = 0
         last_swap = len(list_)
@@ -164,14 +170,19 @@ class Sorting:
                         flag = True
         return list_
 
-    def Shellsort_orig(self, list_):
-        increment = len(list_) // 2
-        while increment > 0:
+    def shell_sort_orig(self, list_input, steps=None):
+        list_ = list_input.copy()
+        if steps is None:
+            steps = []
+            while (increment := len(list_) // 2) > 0:
+                steps.append(increment)
+                increment //= 2
+        for increment in steps:
             for i in range(increment):
                 output = []
                 for j in range(i, len(list_), increment):
                     output.append(list_[j])
-                output = self.insertionSort_orig(output)
+                output = self.insertion_sort_original(output)
                 t = -1
                 for j in range(i, len(list_), increment):
                     t += 1
@@ -179,14 +190,19 @@ class Sorting:
             increment //= 2
         return list_
 
-    def Shellsort_ver1(self, list_):
-        increment = len(list_) // 2
-        while increment > 0:
+    def shell_sort_with_binary_search(self, list_input, steps=None):
+        list_ = list_input.copy()
+        if steps is None:
+            steps = []
+            while (increment := len(list_) // 2) > 0:
+                steps.append(increment)
+                increment //= 2
+        for increment in steps:
             for i in range(increment):
                 output = []
                 for j in range(i, len(list_), increment):
                     output.append(list_[j])
-                output = self.insertionSort_ver1(output)
+                output = self.insertion_sort_with_binary_search(output)
                 t = -1
                 for j in range(i, len(list_), increment):
                     t += 1
@@ -194,37 +210,38 @@ class Sorting:
             increment //= 2
         return list_
 
-    def RadixSort(self, list_):  # добавить сounter
-        t = 1
-        mx_len = 1
-        while t <= mx_len:
+    def radix_sort(self, list_input):
+        list_ = list_input.copy()
+        number_digit = 1
+        mx_len = len(str(max(list_, key=lambda x: len(str(x)))))
+        while number_digit <= mx_len:
             bucket = [[] for _ in range(10)]
             for i in list_:
-                if len(str(i)) > mx_len:
-                    mx_len = len(str(i))
                 num = str(i)
-                if len(num) < t:
+                if len(num) < number_digit:
                     bucket[0].append(i)
                 else:
-                    bucket[int(num[-t])].append(i)
+                    bucket[int(num[-number_digit])].append(i)
             list_.clear()
             for i in bucket:
                 list_.extend(i)
-            t += 1
+            number_digit += 1
         return list_
 
-    def HeapSort(self, list_):
-        Tree = binaryTree()
+    def heap_sort(self, list_input):
+        list_ = list_input.copy()
+        tree = binaryTree()
 
         for i in list_:
-            Tree.append(Node(i))
-        Tree.recurtree_sort(Tree.root)
-        return Tree.output
+            tree.append(Node(i))
+        tree.tree_sort(tree.root)
+        return tree.output
 
-    def Merge_Lists(self, list_A, list_B):
+    def __merge_lists(self, list_A, list_B):
         output = []
-        index_A, index_B = 0, 0
+        index_A = index_B = 0
         while len(list_A) != index_A and len(list_B) != index_B:
+            self._counter += 1
             if list_A[index_A] > list_B[index_B]:
                 output.append(list_B[index_B])
                 index_B += 1
@@ -237,13 +254,35 @@ class Sorting:
             output.extend(list_A[index_A:])
         return output
 
-    def Merge_Sort(self, list_):
+    def merge_sort(self, list_input):
+        list_ = list_input.copy()
         if len(list_) != 1:
-            list_A = self.Merge_Sort(list_[:len(list_) // 2])
-            list_B = self.Merge_Sort(list_[len(list_) // 2:])
-            return self.Merge_Lists(list_A, list_B)
+            list_A = self.merge_sort(list_[:len(list_) // 2])
+            list_B = self.merge_sort(list_[len(list_) // 2:])
+            return self.__merge_lists(list_A, list_B)
         else:
             return list_
 
+    def quick_sort_original(self, list_input):
+        list_ = list_input.copy()
+        if len(list_) > 1:
+            pivot = list_[0]
+            list_A = self.quick_sort_original(list(filter(lambda x: x < pivot, list_)))
+            list_B = self.quick_sort_original(list(filter(lambda x: x > pivot, list_)))
+            self._counter += len(list_) - 1
+            return list_A + [pivot] + list_B
+        else:
+            return list_
 
+    def quick_sort_with_mid_pivot(self, list_input):
+        list_ = list_input.copy()
+        if len(list_) > 1:
+            pivot = list_[len(list_) // 2]
+            list_A = self.quick_sort_with_mid_pivot(list(filter(lambda x: x < pivot, list_)))
+            list_B = self.quick_sort_with_mid_pivot(list(filter(lambda x: x > pivot, list_)))
+            self._counter += len(list_) - 1
+            return list_A + [pivot] + list_B
+        else:
+            return list_
 
+# бинарная сортировка шелла менее эффективна чем обычная сортировка шелла
