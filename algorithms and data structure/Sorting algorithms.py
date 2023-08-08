@@ -267,10 +267,11 @@ class Sorting:
         list_ = list_input.copy()
         if len(list_) > 1:
             pivot = list_[0]
-            list_A = self.quick_sort_original(list(filter(lambda x: x < pivot, list_)))
-            list_B = self.quick_sort_original(list(filter(lambda x: x > pivot, list_)))
+            list_equal = [pivot] * list_.count(pivot)
+            list_small = self.quick_sort_original(list(filter(lambda x: x < pivot, list_)))
+            list_large = self.quick_sort_original(list(filter(lambda x: x > pivot, list_)))
             self._counter += len(list_) - 1
-            return list_A + [pivot] + list_B
+            return list_small + list_equal + list_large
         else:
             return list_
 
@@ -278,10 +279,23 @@ class Sorting:
         list_ = list_input.copy()
         if len(list_) > 1:
             pivot = list_[len(list_) // 2]
-            list_A = self.quick_sort_with_mid_pivot(list(filter(lambda x: x < pivot, list_)))
-            list_B = self.quick_sort_with_mid_pivot(list(filter(lambda x: x > pivot, list_)))
+            list_equal = [pivot] * list_.count(pivot)
+            list_small = self.quick_sort_with_mid_pivot(list(filter(lambda x: x < pivot, list_)))
+            list_large = self.quick_sort_with_mid_pivot(list(filter(lambda x: x > pivot, list_)))
             self._counter += len(list_) - 1
-            return list_A + [pivot] + list_B
+            return list_small + list_equal + list_large
+        else:
+            return list_
+
+    def RandomizedQuickSort(self, list_input):
+        list_ = list_input.copy()
+        if len(list_) > 1:
+            pivot = list_.pop()
+            list_equal = [pivot] * list_.count(pivot)
+            list_small = self.quick_sort_with_mid_pivot(list(filter(lambda x: x < pivot, list_)))
+            list_large = self.quick_sort_with_mid_pivot(list(filter(lambda x: x > pivot, list_)))
+            self._counter += len(list_) - 1
+            return list_small + list_equal + list_large
         else:
             return list_
 
