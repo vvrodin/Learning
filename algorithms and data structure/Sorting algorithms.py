@@ -221,6 +221,29 @@ class Sorting:
         Tree.recurtree_sort(Tree.root)
         return Tree.output
 
+    def Merge_Lists(self, list_A, list_B):
+        output = []
+        index_A, index_B = 0, 0
+        while len(list_A) != index_A and len(list_B) != index_B:
+            if list_A[index_A] > list_B[index_B]:
+                output.append(list_B[index_B])
+                index_B += 1
+            else:
+                output.append(list_A[index_A])
+                index_A += 1
+        if len(list_A) == index_A:
+            output.extend(list_B[index_B:])
+        else:
+            output.extend(list_A[index_A:])
+        return output
+
+    def Merge_Sort(self, list_):
+        if len(list_) != 1:
+            list_A = self.Merge_Sort(list_[:len(list_) // 2])
+            list_B = self.Merge_Sort(list_[len(list_) // 2:])
+            return self.Merge_Lists(list_A, list_B)
+        else:
+            return list_
 
 
 
