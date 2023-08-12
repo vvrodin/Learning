@@ -23,7 +23,6 @@ class binaryTree:
         if value > node.data:
             if node.right:
                 return self.__find(node.right, node, value)
-
         return node, parent, False
 
 
