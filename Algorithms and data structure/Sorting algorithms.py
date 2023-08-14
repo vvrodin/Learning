@@ -1,3 +1,6 @@
+import random
+
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -286,14 +289,13 @@ class Sorting:
         else:
             return list_
 
-    def RandomizedQuickSort(self, list_input):
+    def randomized_quick_sort(self, list_input):
         list_ = list_input.copy()
         if len(list_) > 1:
-            pivot = list_.pop()
+            pivot = random.choice(list_)
             list_equal = [pivot] * list_.count(pivot)
-            list_small = self.quick_sort_with_mid_pivot(list(filter(lambda x: x < pivot, list_)))
-            list_large = self.quick_sort_with_mid_pivot(list(filter(lambda x: x > pivot, list_)))
-            self._counter += len(list_) - 1
+            list_small = self.randomized_quick_sort([x for x in list_ if x < pivot])
+            list_large = self.randomized_quick_sort([x for x in list_ if x > pivot])
             return list_small + list_equal + list_large
         else:
             return list_

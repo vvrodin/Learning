@@ -56,6 +56,18 @@ class Linked_list:
         previous_node.next_node = node.next_node
         return
 
+    def count(self, *element):
+        counter = 0
+        element = list(element)
+        node = self.head
+        while node.next_node is not None:
+            if node.data == element:
+                counter += 1
+            node = node.next_node
+        if node.data == element:
+            counter += 1
+        return counter
+
     def show_list(self):
         node = self.head
         while node.next_node is not None:
