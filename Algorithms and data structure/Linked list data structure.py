@@ -1,6 +1,6 @@
 class Node:
-    def __init__(self, *args, first_init=False):
-        if first_init:
+    def __init__(self, *args):
+        if not args:
             self.data = None
         else:
             self.data = list(*args)
@@ -49,8 +49,8 @@ class linked_lists:
 class singly_linked_list(linked_lists):
     def __init__(self):
         super().__init__()
-        self.head = Node(None, first_init=True)
-        self.head.next_node = Node(None, first_init=True)
+        self.head = Node(None)
+        self.head.next_node = Node(None)
 
     def push_back(self, *args):
         args = list(args)
@@ -92,9 +92,9 @@ class singly_linked_list(linked_lists):
 class doubly_linked_list(linked_lists):
     def __init__(self):
         super().__init__()
-        self.head = Node(None, first_init=True)
+        self.head = Node(None)
         self.head.previous_node = None
-        self.head.next_node = Node(None, first_init=True)
+        self.head.next_node = Node(None)
         self.head.next_node.previous_node = self.head
         self.tail = self.head.next_node
 
