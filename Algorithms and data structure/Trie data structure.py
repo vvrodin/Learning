@@ -6,7 +6,6 @@ class Node:
             Node.is_key = False
         else:
             Node.data = list(*args)
-            Node.is_key = True
         self.next_nodes = []
 
     def __str__(self):
@@ -42,7 +41,7 @@ class Trie:
                     return node
             else:
                 if remove:
-                    raise  KeyError
+                    raise KeyError
                 if if_not:
                     return -1
                 if i == len(key) - 1:
@@ -97,9 +96,5 @@ class Trie:
     def __setitem__(self, key, value):
         return self.add(key=key, data=value)
 
-import random
-d = Trie()
-for i in ['abc', 'abd', 'bcc', 'cda']:
-    d.add(key=i, data=[1, 2, 3])
-d.remove(key='abc')
-print(d)
+    def __delitem__(self, key):
+        self.remove(key)
