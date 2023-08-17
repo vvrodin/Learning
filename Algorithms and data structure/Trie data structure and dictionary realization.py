@@ -8,8 +8,11 @@ class Node:
             Node.data = list(*args)
         self.next_nodes = []
 
+    def add_data(self, *args):
+        self.data = args
+
     def __str__(self):
-        return f'node({self.symbol})'
+        return f'Node({self.symbol})'
 
 
 class Trie:
@@ -23,40 +26,35 @@ class Trie:
         if key == '':
             raise KeyError
 
-    def __find_node(self, key, if_not=False, remove=False):
+    def __find_node(self, key, add=False, previous=False):
         node = self.head
-        for i in range(len(key)):
+        i = 0
+        flag = True
+        previous_node = node
+        while flag and i < len(key):
             symbol = key[i]
-            if symbol in [t.symbol for t in node.next_nodes]:
-                previous = node
-                for j in node.next_nodes:
-                    if j.symbol == symbol:
-                        node = j
-                if i == len(key) - 1 and remove:
-                    node.data = None
-                    if not node.next_nodes:
-                        previous.next_nodes.pop(previous.next_nodes.index(node))
-                        return
-                if i == len(key) - 1:
-                    return node
-            else:
-                if remove:
-                    raise KeyError
-                if if_not:
-                    return -1
-                if i == len(key) - 1:
-                    temp = Node(symbol=symbol)
-                    node.next_nodes.append(temp)
-                    node = temp
-                    return node
-                else:
-                    temp = Node(symbol=symbol)
-                    node.next_nodes.append(temp)
-                    node = temp
+            flag = False
+            for j in node.next_nodes:
+                if symbol == j.symbol:
+                    flag = True
+                    previous_node = node
+                    node = j
+            if not flag and add:
+                temp = Node(symbol=symbol)
+                node.next_nodes.append(temp)
+                node = temp
+                flag = True
+            i += 1
+        if not flag:
+            return -1
+        elif flag and previous:
+            return node, previous_node
+        elif flag:
+            return node
 
     def add(self, key, data):
         self.__key_validation(key)
-        node = self.__find_node(key)
+        node = self.__find_node(key, add=True)
         node.data = data
 
     def find(self, key):
@@ -69,7 +67,13 @@ class Trie:
 
     def remove(self, key):
         self.__key_validation(key)
-        self.__find_node(key, remove=True)
+        node, previous_node = self.__find_node(key, previous=True)
+        if node == -1:
+            raise KeyError
+        elif not node.next_nodes:
+            previous_node.pop(previous_node.index(node))
+        else:
+            node.data = None
 
     def __show_trie(self, node, s=''):
         s += node.symbol

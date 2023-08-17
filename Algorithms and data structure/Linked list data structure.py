@@ -1,78 +1,71 @@
 class Node:
-    def __init__(self, *args):
+    def __init__(self, args):
         if not args:
             self.data = None
         else:
-            self.data = list(*args)
+            self.data = args
         self.next_node = None
         self.previous_node = None
         return
 
     def __str__(self):
-        return str(self.data)
+        return str(list(self.data))
 
 
 class linked_lists:
     def __init__(self):
         self.head = None
+        self.tail = None
 
     def find(self, *element):
-        element = list(element)
         node = self.head
-        while node.data != element and node.next_node is not None:
+        while node is not None:
+            if node.data == element:
+                return node
             node = node.next_node
-        if node.data == element:
-            return node
-        if node.data != element:
-            return -1
+        return -1
 
     def count(self, *element):
         counter = 0
-        element = list(element)
         node = self.head
-        while node.next_node is not None:
+        while node is not None:
             if node.data == element:
                 counter += 1
             node = node.next_node
-        if node.data == element:
-            counter += 1
         return counter
 
     def show_list(self):
+        res = ''
         node = self.head
-        while node.next_node is not None:
-            print(node, end=' - ')
+        while node is not None:
+            res += str(node) + ' - '
             node = node.next_node
-        print(node)
+        return res
+
+    def __str__(self):
+        return self.show_list()
 
 
 class singly_linked_list(linked_lists):
-    def __init__(self):
-        super().__init__()
-        self.head = Node(None)
-        self.head.next_node = Node(None)
 
     def push_back(self, *args):
-        args = list(args)
-        if self.head.data is None:
-            self.head.data = args
+        if self.head is None:
+            self.head = Node(args)
             return None
-        elif self.head.next_node.data is None:
-            self.head.next_node.data = args
+        elif self.tail is None:
+            self.head.next_node = Node(args)
+            self.tail = self.head.next_node
             return None
-        node = self.head
-        while node.next_node is not None:
-            node = node.next_node
-        node.next_node = Node(args)
+        node = Node(args)
+        self.tail.next_node = node
+        self.tail = node
 
     def push_front(self, *args):
-        args = list(args)
         node = Node(args)
         node.next_node = self.head
         self.head = node
 
     def remove(self, *element):
-        element = list(element)
         node = self.head
         previous_node = -1
         while node.data != element and node.next_node is not None:
@@ -90,39 +83,26 @@ class singly_linked_list(linked_lists):
 
 
 class doubly_linked_list(linked_lists):
-    def __init__(self):
-        super().__init__()
-        self.head = Node(None)
-        self.head.previous_node = None
-        self.head.next_node = Node(None)
-        self.head.next_node.previous_node = self.head
-        self.tail = self.head.next_node
-
     def push_back(self, *args):
-        args = list(args)
-        if self.head.data is None:
-            self.head.data = args
-            return None
-        elif self.head.next_node.data is None:
-            self.head.next_node.data = args
-            return None
-        node = self.head
-        while node.next_node is not None:
-            node = node.next_node
-        node.next_node = Node(args)
-        node.next_node.previous_node = node
-        self.tail = node.next_node
+        if self.head is None:
+            self.head = Node(args)
+            return
+        elif self.head.next_node is None:
+            self.head.next_node = Node(args)
+            self.head.next_node.previous_node = self.head
+            self.tail = self.head.next_node
+            return
+        node = Node(args)
+        node.previous_node = self.tail
+        self.tail = node
 
     def push_front(self, *args):
-        args = list(args)
         node = Node(args)
+        self.head.previous_node = node
         node.next_node = self.head
-        self.head = node
-        self.head.next_node.previous_node = node
-        self.head.previous_node = None
+        node.previous_node = None
 
     def remove(self, *element):
-        element = list(element)
         node = self.head
         previous_node = -1
         while node.data != element and node.next_node is not None:
