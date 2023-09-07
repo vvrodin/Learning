@@ -101,3 +101,13 @@ class Numerical:
             i += 1
         answer = [i[-1] for i in matrix]
         return answer
+
+    def fast_matrix_exponentiation(self, matrix, n):
+        if n == 1:
+            return matrix
+        if n % 2 == 1:
+            y = self.fast_matrix_exponentiation(matrix, n - 1)
+            return self.matrix_multiplication(y, matrix)
+        elif n % 2 == 0:
+            y = self.fast_matrix_exponentiation(matrix, n // 2)
+            return self.matrix_multiplication(y, y)

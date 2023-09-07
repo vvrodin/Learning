@@ -91,6 +91,8 @@ class Trie:
         else:
             return f"'{s}': {node.data}, "
 
+
+class dictionary(Trie):
     def __str__(self):
         return '{' + self.__show_trie(self.head) + '}'
 

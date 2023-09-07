@@ -1,7 +1,7 @@
 class Node:
     def __init__(self, args):
         if not args:
-            self.data = None
+            self.data = None # в случае первоначального создания элементом списка
         else:
             self.data = args
         self.next_node = None
@@ -47,7 +47,6 @@ class linked_lists:
 
 
 class singly_linked_list(linked_lists):
-
     def push_back(self, *args):
         if self.head is None:
             self.head = Node(args)
