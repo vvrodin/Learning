@@ -50,7 +50,7 @@ class doubly_linked_list(linked_lists):
         node.previous_node = None
 
 
-class FIFO_deque(linked_lists):
+class FIFO_queue(linked_lists):
     def push(self, *args):
         if self.head is None:
             self.head = Node(args)
@@ -86,7 +86,7 @@ class FIFO_deque(linked_lists):
         return size
 
 
-class LIFO_deque(linked_lists):
+class LIFO_queue(linked_lists):  #Stack
     def push(self, *args):
         if self.head is None:
             self.head = Node(args)
@@ -108,38 +108,10 @@ class LIFO_deque(linked_lists):
         self.tail.next_node = None
         return res
 
-    def empty(self):
-        return self.head is None
-
-    def size(self):
-        size = 0
-        node = self.head
-        while node is not None:
-            size += 1
-            node = node.next_node
-        return size
-
-class Stack(linked_lists:
-    def push(self, *args):
-        if self.head is None:
-            self.head = Node(args)
-        elif self.head.next_node is None:
-            self.head.next_node = Node(args)
-            self.head.next_node.previous_node = self.head
-            self.tail = self.head.next_node
-        else:
-            node = Node(args)
-            node.previous_node = self.tail
-            self.tail.next_node = node
-            self.tail = self.tail.next_node
-
-    def pop(self):
-        if self.head is None:
-            return
-        res = self.tail
-        self.tail = self.tail.previous_node
-        self.tail.next_node = None
-        return res
+    def peek(self):
+        if self.head is not None and self.tail is None:
+            return self.head
+        return self.tail
 
     def empty(self):
         return self.head is None
