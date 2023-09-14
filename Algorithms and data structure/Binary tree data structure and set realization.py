@@ -96,27 +96,4 @@ class binaryTree:
             print()
             v = vn
 
-
-class my_set(binaryTree):
-    def add(self, data):
-        self.append(data)
-
-    def difference(self, set1):
-        pass
-
-    def symmetric_difference(self):
-        pass
-
-    def intersection(self):
-        pass
-
-    def issubset(self, set1):
-        if self.size >= set1.size():
-            return False
-        if
-
-    def isupperset(self):
-        pass
-
-    def union(self):
-        pass
+    # сделать АВЛ дерево

@@ -9,7 +9,7 @@ class Node:
     def get_num(self):
         return self.num
 
-    def __str__(self):
+    def __repr__(self):
         return f'Node({self.get_num() + 1})'
 
 
@@ -51,3 +51,8 @@ class Graph:
             if i not in visited:
                 st += self.show_graph(node=nodes[i][0], visited=visited)
         return st
+
+matrix = [[0,1,1],[1,0,1],[1,1,0]]
+G = Graph()
+G.initial_generation(matrix)
+print(G.nodes[1])

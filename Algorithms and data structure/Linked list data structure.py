@@ -8,7 +8,7 @@ class Node:
         self.previous_node = None
         return
 
-    def __str__(self):
+    def __repr__(self):
         return str(list(self.data))
 
 

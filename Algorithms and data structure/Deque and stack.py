@@ -8,7 +8,7 @@ class Node:
         self.previous_node = None
         return
 
-    def __str__(self):
+    def __repr__(self):
         return str(list(self.data))
 
 
@@ -123,3 +123,5 @@ class LIFO_queue(linked_lists):  #Stack
             size += 1
             node = node.next_node
         return size
+
+# прописать ДЭК
